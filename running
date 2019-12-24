@@ -1,0 +1,32 @@
+import numpy as np
+from keras.models import load_model
+import matplotlib.pyplot as plt
+import cv2
+
+# index=900
+
+# from keras.datasets import mnist
+# from keras import backend as K
+# K.set_image_dim_ordering('th')
+# (X_train, y_train), (X_test, y_test) = mnist.load_data()
+# plt.imshow(X_test[index])
+
+# X_test = X_test.reshape(X_test.shape[0], 1, 1, 28, 28).astype('float32')
+# X_test = X_test/255
+
+model = load_model('new_model.h5')
+
+img = cv2.imread('four_new.png')
+#plt.imshow(img)
+
+img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+#plt.imshow(img_gray)
+small = cv2.resize(img_gray, (0,0), fx=0.5, fy=0.5) 
+resized_image = cv2.resize(small, (28, 28)) 
+plt.imshow(resized_image)
+
+resized_image = resized_image.reshape(1,1,28,28).astype('float32')
+resized_image = resized_image/255
+
+print(model.predict_classes(resized_image, batch_size=1, verbose=0))
